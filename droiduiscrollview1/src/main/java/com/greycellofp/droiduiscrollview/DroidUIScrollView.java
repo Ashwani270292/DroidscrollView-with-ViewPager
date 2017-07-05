@@ -34,7 +34,16 @@ import java.util.List;
 /**
  * Created by pawan.kumar1 on 19/01/15.
  */
-public class DroidUIScrollView extends FrameLayout {
+public class DroidUIScrollView extends FrameLayout{
+
+    //instance of interface
+    MyScrollInterface myScrollInterface;
+
+    //setter
+    public void setMyScrollInterface(MyScrollInterface myScrollInterface){
+        this.myScrollInterface = myScrollInterface;
+    }
+
     private static final String TAG = DroidUIScrollView.class.getSimpleName();
 
     private static final int ANIMATED_SCROLL_GAP = 250;
@@ -700,6 +709,12 @@ public class DroidUIScrollView extends FrameLayout {
                     final int unconsumedY = deltaY - scrolledDeltaY;
                     final int scrolledDeltaX = getScrollX() - oldX;
                     final int unconsumedX = deltaX - scrolledDeltaX;
+                    //TODO setting deltaY
+                    //setting deltaY
+                    myScrollInterface.getScrollDeltaY(scrolledDeltaY);
+                    //setting deltaX
+                    myScrollInterface.getScollDeltaX(scrolledDeltaX);
+
 //                    if (dispatchNestedScroll(scrolledDeltaX, scrolledDeltaY, unconsumedX, unconsumedY, mScrollOffset)) {
 //                        mLastMotionY -= mScrollOffset[1];
 //                        mLastMotionX -= mScrollOffset[0];
@@ -1277,7 +1292,8 @@ public class DroidUIScrollView extends FrameLayout {
             final int scrollX = getScrollX();
             dy = Math.max(0, Math.min(scrollY + dy, maxY)) - scrollY;
             dx = Math.max(0, Math.min(scrollX + dx, maxX)) - scrollX;
-
+            myScrollInterface.getScrollDeltaY(dy);
+            myScrollInterface.getScollDeltaX(dx);
             mScroller.startScroll(scrollX, scrollY, dx, dy);
 //            postInvalidateOnAnimation();
         } else {
@@ -1296,6 +1312,7 @@ public class DroidUIScrollView extends FrameLayout {
      * @param y the position where to scroll on the Y axis
      */
     public final void smoothScrollTo(int x, int y) {
+
         smoothScrollBy(x - getScrollX(), y - getScrollY());
     }
 
